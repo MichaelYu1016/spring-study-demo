@@ -1,0 +1,35 @@
+package com.example.ynx.springbootasync.config;
+
+import java.util.concurrent.ThreadPoolExecutor;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+/**
+ * 线程池配置
+ *
+ * @author ynx
+ * @version V1.0
+ * @date 2020-01-16
+ */
+@Configuration
+public class AsyncPoolConfig {
+
+    @Bean("asyncThread")
+    public ThreadPoolTaskExecutor asyncThreadPoolTaskExecutor(){
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(20);
+        executor.setMaxPoolSize(200);
+        executor.setQueueCapacity(25);
+        executor.setKeepAliveSeconds(200);
+        executor.setThreadNamePrefix("asyncThread");
+        executor.setWaitForTasksToCompleteOnShutdown(true);
+        executor.setAwaitTerminationSeconds(60);
+
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+
+        executor.initialize();
+        return executor;
+    }
+}
