@@ -1,7 +1,10 @@
 package com.example.ynx.springbootjson.dao;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
+
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,7 +20,8 @@ public class User implements Serializable {
     private String userName;
     private int age;
     private String password;
-    private Date birthday;
+    private LocalDate birthday;
+    private LocalDateTime createTime;
     private String mail;
 
     public String getUserName() {
@@ -44,11 +48,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 
@@ -60,6 +64,14 @@ public class User implements Serializable {
         this.mail = mail;
     }
 
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -67,6 +79,7 @@ public class User implements Serializable {
                 ", age=" + age +
                 ", password='" + password + '\'' +
                 ", birthday=" + birthday +
+                ", createTime=" + createTime +
                 ", mail='" + mail + '\'' +
                 '}';
     }

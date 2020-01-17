@@ -1,5 +1,7 @@
 package com.example.ynx.springbootjson.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import com.example.ynx.springbootjson.dao.User;
@@ -21,7 +23,8 @@ public class JsonController {
         User user = new User();
         user.setUserName("张三");
         user.setAge(26);
-        user.setBirthday(new Date());
+        user.setBirthday(LocalDate.now());
+        user.setCreateTime(LocalDateTime.now());
         user.setMail("12345679887@qq.com");
         return user;
     }
