@@ -3,12 +3,12 @@ package com.example.ynx.springbootjson.dao;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
-
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
+ * User实体类
+ *
  * @author ynx
  * @version V1.0
  * @date 2020-01-17
@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class User implements Serializable {
     private static final long serialVersionUID = 6222176558369919436L;
 //    可以指定property也可以通过config类设置property命名策略
-//    @JsonProperty(value = "user_name")
+//    @JsonProperty(value = "userName")
     private String userName;
     private int age;
     private String password;

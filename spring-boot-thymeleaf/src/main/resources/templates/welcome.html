@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1 th:text="'Welcome, '+${user.name}+'!'">Welcome!</h1>
+    <span th:if="${user.age}<=18">清晨的太阳</span>
+    <span th:if="${user.age}>18 and ${user.age}<30">正午的太阳</span>
+</body>
+</html>
