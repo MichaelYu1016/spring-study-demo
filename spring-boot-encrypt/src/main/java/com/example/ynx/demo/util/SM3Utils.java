@@ -208,6 +208,6 @@ public class SM3Utils {
     }
 
     public static void main(String[] args) throws IOException {
-        System.out.println(SM3Utils.byteArrayToHexString(SM3Utils.hash("test".getBytes())));
+        System.out.println(SM3Utils.byteArrayToHexString(SM3Utils.hash("中国人".getBytes())));
     }
 }

@@ -794,8 +794,12 @@ public class SM2Utils {
         SM2Utils sm02 = new SM2Utils();
 
         System.out.println("-----------------公钥加密与解密-----------------");
-        ECPoint publicKey = sm02.importPublicKey("E:/publickey.pem");
-        BigInteger privateKey = sm02.importPrivateKey("E:/privatekey.pem");
+        SM2KeyPair sm2KeyPair = sm02.generateKeyPair();
+//        ECPoint publicKey = sm02.importPublicKey("E:/publickey.pem");
+//        BigInteger privateKey = sm02.importPrivateKey("E:/privatekey.pem");
+        ECPoint publicKey = sm2KeyPair.getPublicKey();
+        BigInteger privateKey = sm2KeyPair.getPrivateKey();
+        System.out.println("publicKey: "+publicKey+", privateKey: "+privateKey);
         byte[] data = sm02.encrypt("测试加密aaaaaaaaaaa123aabb", publicKey);
         System.out.print("密文:");
         SM2Utils.printHexString(data);
