@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
@@ -44,6 +45,19 @@ public class SM2Utils {
     private static ECCurve.Fp curve;
     private static ECPoint G;
     private boolean debug = false;
+
+    public SM2Utils() {
+        curve = new ECCurve.Fp(p, // q
+                a, // a
+                b); // b
+        G = curve.createPoint(gx, gy);
+        ecc_bc_spec = new ECDomainParameters(curve, G, n);
+    }
+
+    public SM2Utils(boolean debug) {
+        this();
+        this.debug = debug;
+    }
 
     public boolean isDebug() {
         return debug;
@@ -96,8 +110,8 @@ public class SM2Utils {
      * @return
      */
     private boolean allZero(byte[] buffer) {
-        for (int i = 0; i < buffer.length; i++) {
-            if (buffer[i] != 0)
+        for (byte value : buffer) {
+            if (value != 0)
                 return false;
         }
         return true;
@@ -190,10 +204,8 @@ public class SM2Utils {
     /**
      * 私钥解密
      *
-     * @param encryptData
-     *            密文数据字节数组
-     * @param privateKey
-     *            解密私钥
+     * @param encryptData 密文数据字节数组
+     * @param privateKey 解密私钥
      * @return
      */
     public String decrypt(byte[] encryptData, BigInteger privateKey) {
@@ -245,13 +257,9 @@ public class SM2Utils {
         /* 6 计算 u = Hash(x2 || M' || y2) 判断 u == C3是否成立 */
         byte[] C3 = new byte[DIGEST_LENGTH];
 
-        if (debug)
-            try {
-                System.out.println("M = " + new String(M, "UTF8"));
-            } catch (UnsupportedEncodingException e1) {
-                // TODO Auto-generated catch block
-                e1.printStackTrace();
-            }
+        if (debug) {
+            System.out.println("M = " + new String(M, StandardCharsets.UTF_8));
+        }
 
         System.arraycopy(encryptData, encryptData.length - DIGEST_LENGTH, C3, 0, DIGEST_LENGTH);
         byte[] u = sm3hash(dBC1.getXCoord().toBigInteger().toByteArray(), M,
@@ -259,12 +267,7 @@ public class SM2Utils {
         if (Arrays.equals(u, C3)) {
             if (debug)
                 System.out.println("解密成功");
-            try {
-                return new String(M, "UTF8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            return null;
+            return new String(M, StandardCharsets.UTF_8);
         } else {
             if (debug) {
                 System.out.print("u = ");
@@ -319,7 +322,7 @@ public class SM2Utils {
     /**
      * 判断生成的公钥是否合法
      *
-     * @param publicKey
+     * @param publicKey 公钥
      * @return
      */
     private boolean checkPublicKey(ECPoint publicKey) {
@@ -371,19 +374,6 @@ public class SM2Utils {
         }
     }
 
-    public SM2Utils() {
-        curve = new ECCurve.Fp(p, // q
-                a, // a
-                b); // b
-        G = curve.createPoint(gx, gy);
-        ecc_bc_spec = new ECDomainParameters(curve, G, n);
-    }
-
-    public SM2Utils(boolean debug) {
-        this();
-        this.debug = debug;
-    }
-
     /**
      * 导出公钥到本地
      *
@@ -395,7 +385,7 @@ public class SM2Utils {
         try {
             if (!file.exists())
                 file.createNewFile();
-            byte buffer[] = publicKey.getEncoded(false);
+            byte[] buffer = publicKey.getEncoded(false);
             FileOutputStream fos = new FileOutputStream(file);
             fos.write(buffer);
             fos.close();
@@ -530,12 +520,9 @@ public class SM2Utils {
     /**
      * 签名
      *
-     * @param M
-     *            签名信息
-     * @param IDA
-     *            签名方唯一标识
-     * @param keyPair
-     *            签名方密钥对
+     * @param M 签名信息
+     * @param IDA 签名方唯一标识
+     * @param keyPair 签名方密钥对
      * @return 签名
      */
     public Signature sign(String M, String IDA, SM2KeyPair keyPair) {
@@ -564,14 +551,10 @@ public class SM2Utils {
     /**
      * 验签
      *
-     * @param M
-     *            签名信息
-     * @param signature
-     *            签名
-     * @param IDA
-     *            签名方唯一标识
-     * @param aPublicKey
-     *            签名方公钥
+     * @param M 签名信息
+     * @param signature 签名
+     * @param IDA 签名方唯一标识
+     * @param aPublicKey 签名方公钥
      * @return true or false
      */
     public boolean verify(String M, Signature signature, String IDA, ECPoint aPublicKey) {
@@ -600,8 +583,7 @@ public class SM2Utils {
      * 密钥派生函数
      *
      * @param Z
-     * @param klen
-     *            生成klen字节数长度的密钥
+     * @param klen 生成klen字节数长度的密钥
      * @return
      */
     private static byte[] KDF(byte[] Z, int klen) {
