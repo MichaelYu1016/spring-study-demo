@@ -17,6 +17,7 @@ import java.util.Arrays;
 import org.bouncycastle.crypto.params.ECDomainParameters;
 import org.bouncycastle.math.ec.ECCurve;
 import org.bouncycastle.math.ec.ECPoint;
+import org.bouncycastle.util.encoders.Hex;
 
 /**
  * @author ynx
@@ -49,7 +50,9 @@ public class SM2Utils {
     public SM2Utils() {
         curve = new ECCurve.Fp(p, // q
                 a, // a
-                b); // b
+                b, // b
+                null,
+                null);
         G = curve.createPoint(gx, gy);
         ecc_bc_spec = new ECDomainParameters(curve, G, n);
     }
@@ -120,10 +123,8 @@ public class SM2Utils {
     /**
      * 公钥加密
      *
-     * @param input
-     *            加密原文
-     * @param publicKey
-     *            公钥
+     * @param input 加密原文
+     * @param publicKey 公钥
      * @return
      */
     public byte[] encrypt(String input, ECPoint publicKey) {
@@ -785,6 +786,7 @@ public class SM2Utils {
         byte[] data = sm02.encrypt("测试加密aaaaaaaaaaa123aabb", publicKey);
         System.out.print("密文:");
         SM2Utils.printHexString(data);
+        System.out.println(Hex.toHexString(data).toUpperCase());
         System.out.println("解密后明文:" + sm02.decrypt(data, privateKey));
 
         System.out.println("-----------------签名与验签-----------------");
