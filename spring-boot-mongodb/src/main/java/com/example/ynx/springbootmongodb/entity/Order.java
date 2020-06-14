@@ -3,6 +3,7 @@ package com.example.ynx.springbootmongodb.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Document(collection = "order")
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 7429590305446115504L;
