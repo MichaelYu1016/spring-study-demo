@@ -182,10 +182,17 @@ public class SM4Utils {
 
     public static void main(String[] args) {
         try {
-            String json = "{\"name\":\"Michael\",\"website\":\"http://www.cnblogs.com/Marydon20170307\"}";
+            String json = "{\n" +
+                    "    \" channel \":\"12345\",\n" +
+                    "    \" certNo \": \"123\",\n" +
+                    "    \" mobilePhone \":\"123\",\n" +
+                    "    \" userId \": \"123\",\n" +
+                    "    \" linkNum \": \"1234\",\n" +
+                    " }\n";
             System.out.println("加密前源数据————" + json);
             // 生成32位16进制密钥
-            String key = SM4Utils.generateKey();
+            //String key = SM4Utils.generateKey();
+            String key = "c9c8aa885a244a428f9b884886707cfd";
             System.out.println(key + "-----生成key");
             String cipher = SM4Utils.encryptEcb(key, json);
             System.out.println("加密串---" + cipher);
